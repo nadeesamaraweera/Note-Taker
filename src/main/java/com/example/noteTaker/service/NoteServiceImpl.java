@@ -64,14 +64,14 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public void deleteNote(String noteId) {
-//        ListIterator<NoteDTO> tmpList = saveNoteTm.listIterator();
-//        while (tmpList.hasNext()) {
-//            NoteDTO noteDTO = tmpList.next();
-//            if (noteId.equals(noteDTO.getNoteId())) {
-//                tmpList.remove();
-//            }
-//        }
+    public boolean deleteNote(String noteId) {
+        //noteDAO.deleteById(noteId);
+        if(noteDAO.existsById(noteId)){
+            noteDAO.deleteById(noteId);
+            return true;
+        }else {
+            return false;
+        }
 
     }
 
