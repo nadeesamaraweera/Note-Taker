@@ -7,8 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -20,11 +18,8 @@ import javax.sql.DataSource;
 
 @Configuration
 @ComponentScan(basePackages = "com.example.noteTaker")
-@EnableWebMvc
-@EnableJpaRepositories
+@EnableJpaRepositories (basePackages = "com.example.noteTaker")
 @EnableTransactionManagement
-
-
 public class WebAppRootConfig {
 
     @Bean
@@ -38,7 +33,7 @@ public class WebAppRootConfig {
         dmds.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dmds.setUrl("jdbc:mysql://localhost:3306/noteTaker?createDatabaseIfNotExist=true");
         dmds.setUsername("root");
-        dmds.setPassword("lokitha2003");
+        dmds.setPassword("Ijse@1234");
         return dmds;
     }
 

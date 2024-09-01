@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class Mapping {
+public class Mapping { //dto entity waltth entity dto wltth convert karanna.
 
     @Autowired
     private ModelMapper modelMapper;

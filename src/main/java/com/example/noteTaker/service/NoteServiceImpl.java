@@ -2,6 +2,7 @@ package com.example.noteTaker.service;
 
 import com.example.noteTaker.dao.NoteDAO;
 import com.example.noteTaker.dto.NoteDTO;
+import com.example.noteTaker.entity.NoteEntity;
 import com.example.noteTaker.util.AppUtil;
 import com.example.noteTaker.util.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,17 +77,17 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public NoteDTO getSelectedNote(String noteId) {
-//        for (NoteDTO noteDTO : saveNoteTm){
-//            if (noteDTO.getNoteId().equals(noteId)){
-//                return noteDTO;
-//            }
-//        }
-        return null;
+        return mapping.convertToDTO(noteDAO.getReferenceById(noteId));
+
     }
 
     @Override
     public List<NoteDTO> getAllNotes() {
+//       List<NoteEntity> getAllNotes = noteDAO.findAll();
+//       List<NoteDTO> noteDTO= mapping.convertToDTO(getAllNotes)
+//
+//        return noteDTO;
 
-        return null;
+       return mapping.convertToDTO(noteDAO.findAll());
     }
 }
