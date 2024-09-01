@@ -6,6 +6,8 @@ import com.example.noteTaker.service.UserService;
 import com.example.noteTaker.util.AppUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +20,8 @@ public class UserController {
     @Autowired
     private  final UserService userService;
 
-    //save user
-     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE);
+     //save user
+     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
      public ResponseEntity<String> saveUser(
         @RequestPart("firstName") String  firstName,
         @RequestPart("lastName")String  lastName,
@@ -38,8 +40,9 @@ public class UserController {
          builduserDTO.setPassword(password);
          builduserDTO.setProfilePic(base64ProfilePic);
 
+         //send to the service layer
 
-         return null;
+         return new ResponseEntity<>(userService.saveUser(builduserDTO), HttpStatus.CREATED);
      }
 
 }
