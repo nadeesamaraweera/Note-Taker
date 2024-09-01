@@ -15,16 +15,24 @@ import java.util.List;
 @RequestMapping("api/vi/note")
 @RequiredArgsConstructor
 public class NoteController {
-    //Todo : Add health check endpoint
+
     @Autowired
     private final NoteService noteService;
-    //Todo: CRUD of the note
+
+
+    @GetMapping("health")
+    public String healthCheck(){
+        return "Note Taker is rnning";
+    }
+
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createNote(@RequestBody NoteDTO note) {
-        //Todo: Handle with Service
+
         var saveData = noteService.saveNote(note);
         return ResponseEntity.ok(saveData);
     }
+
     @GetMapping(value = "allnotes", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<NoteDTO> getAllNotes(){
         return noteService.getAllNotes();
@@ -42,7 +50,6 @@ public class NoteController {
     public ResponseEntity<String>updateNote(@PathVariable ("noteId") String noteId, @RequestBody NoteDTO note) {
         return noteService.updateNote(noteId, note)? new ResponseEntity<>(HttpStatus.NO_CONTENT):new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
 
 
     @DeleteMapping(value ="/{noteId}" )
