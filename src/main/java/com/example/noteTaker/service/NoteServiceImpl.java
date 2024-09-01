@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Optional;
+
 @Transactional
 @Service // Component annotation eka meta anotate krla thinne service annotation eka athule
 public class NoteServiceImpl implements NoteService {
@@ -51,16 +53,17 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public void updateNote(String noteId, NoteDTO incomeNoteDTO) {
-//        ListIterator<NoteDTO> updatedList = saveNoteTm.listIterator();
-//        while (updatedList.hasNext()) {
-//            NoteDTO noteDTO = updatedList.next();
-//            if (noteId.equals(noteDTO.getNoteId())) {
-//                incomeNoteDTO.setNoteId(noteDTO.getNoteId());
-//                updatedList.set(incomeNoteDTO);
-//                break;
-//            }
-//        }
+    public boolean updateNote(String noteId, NoteDTO incomeNoteDTO) {
+     Optional<NoteEntity> tmpnoteEntity = noteDAO.findById(noteId);
+     if(!tmpnoteEntity.isPresent()){
+         return false;
+     }else {
+         tmpnoteEntity.get().setNoteDesc(incomeNoteDTO.getNoteDesc());
+         tmpnoteEntity.get().setNoteTitle(incomeNoteDTO.getNoteTitle());
+         tmpnoteEntity.get().setCreateDate(incomeNoteDTO.getCreateDate());
+         tmpnoteEntity.get().setPriorityLevel(incomeNoteDTO.getPriorityLevel());
+     }
+      return true;
     }
 
     @Override
