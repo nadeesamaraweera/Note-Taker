@@ -11,4 +11,5 @@ import javax.swing.text.html.parser.Entity;
 @Repository
 public interface UserDAO extends JpaRepository<UserEntity,String> {
     UserEntity getUserEntityByUserId(String userId);
+
 }

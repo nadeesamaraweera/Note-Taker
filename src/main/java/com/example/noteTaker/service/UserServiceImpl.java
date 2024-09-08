@@ -1,7 +1,9 @@
 package com.example.noteTaker.service;
 
 import com.example.noteTaker.dao.UserDAO;
+import com.example.noteTaker.dto.NoteDTO;
 import com.example.noteTaker.dto.UserDTO;
+import com.example.noteTaker.entity.NoteEntity;
 import com.example.noteTaker.entity.UserEntity;
 import com.example.noteTaker.util.AppUtil;
 import com.example.noteTaker.util.Mapping;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional
@@ -29,11 +32,6 @@ public class UserServiceImpl implements UserService{
         userDAO.save(mapping.convertToUserEntity(userDTO));
         return "User saved Successfully";
 
-    }
-
-    @Override
-    public boolean updateUser(String userId, UserDTO userDTO) {
-        return false;
     }
 
     @Override
@@ -58,4 +56,20 @@ public class UserServiceImpl implements UserService{
       List<UserEntity> getAllUsers = userDAO.findAll();
       return  mapping.convertUserToDTOList(getAllUsers);
     }
+
+    @Override
+    public boolean updateUser(UserDTO userDTO) {
+        Optional<UserEntity> tmpUser = userDAO.findById(userDTO.getUserId());
+        if(!tmpUser.isPresent()){
+            return false;
+        }else {
+            tmpUser.get().setFirstName(userDTO.getFirstName());
+            tmpUser.get().setLastName(userDTO.getLastName());
+            tmpUser.get().setEmail(userDTO.getEmail());
+            tmpUser.get().setPassword(userDTO.getPassword());
+            tmpUser.get().setProfilePic(userDTO.getProfilePic());
+        }
+        return true;
+    }
+
 }
