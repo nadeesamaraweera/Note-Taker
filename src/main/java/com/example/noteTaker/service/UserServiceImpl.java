@@ -3,6 +3,7 @@ package com.example.noteTaker.service;
 import com.example.noteTaker.dao.UserDAO;
 import com.example.noteTaker.dto.NoteDTO;
 import com.example.noteTaker.dto.UserDTO;
+import com.example.noteTaker.entity.UserEntity;
 import com.example.noteTaker.util.AppUtil;
 import com.example.noteTaker.util.Mapping;
 import jakarta.transaction.Transactional;
@@ -48,8 +49,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public NoteDTO getSelectedUser(String userId) {
-        return null;
+    public UserDTO getSelectedUser(String userId) {
+        UserEntity userEntityByUserId = userDAO.getUserEntityByUserId(userId);
+        return mapping.convertToUserDTO(userEntityByUserId);
     }
 
     @Override
