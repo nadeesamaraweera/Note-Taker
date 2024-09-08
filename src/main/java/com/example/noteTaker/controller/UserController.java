@@ -30,7 +30,7 @@ public class UserController {
         @RequestPart("profilePic")String  profilePic) {
 
          //Handle Profile Picture
-        String base64ProfilePic= AppUtil.toBase64ProfilePic(profilePic);
+         String base64ProfilePic= AppUtil.toBase64ProfilePic(profilePic);
 
         //build the object
          var builduserDTO = new UserDTO();
@@ -46,3 +46,7 @@ public class UserController {
      }
 
 }
+
+
+//consume - clientge peththe
+//produce - server ek visin
