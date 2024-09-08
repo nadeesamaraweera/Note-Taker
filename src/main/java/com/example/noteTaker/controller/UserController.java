@@ -52,10 +52,17 @@ public class UserController {
 
         //send to the service layer
 
-        return new ResponseEntity<>(userService.saveUser(builduserDTO), HttpStatus.CREATED);
+        var saveStatus = userService.saveUser(builduserDTO);
+        if (saveStatus.contains("User saved successfully")){
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-     //delete user
+
+
+
      @DeleteMapping("/{id}")
      public ResponseEntity<String> deleteUser(@PathVariable("id") String userId){
        return userService.deleteUser(userId)?new ResponseEntity<>(HttpStatus.NO_CONTENT):new ResponseEntity<>(HttpStatus.NOT_FOUND);
