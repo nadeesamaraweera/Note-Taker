@@ -5,6 +5,7 @@ import com.example.noteTaker.dto.NoteDTO;
 import com.example.noteTaker.dto.UserDTO;
 import com.example.noteTaker.entity.NoteEntity;
 import com.example.noteTaker.entity.UserEntity;
+import com.example.noteTaker.exception.UserNotFoundException;
 import com.example.noteTaker.util.AppUtil;
 import com.example.noteTaker.util.Mapping;
 import jakarta.transaction.Transactional;
@@ -37,6 +38,22 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+
+    @Override
+    public void updateUser(UserDTO userDTO) {
+        Optional<UserEntity> tmpUser = userDAO.findById(userDTO.getUserId());
+        if(!tmpUser.isPresent()){
+            throw  new UserNotFoundException("User Not Found");
+        }else {
+            tmpUser.get().setFirstName(userDTO.getFirstName());
+            tmpUser.get().setLastName(userDTO.getLastName());
+            tmpUser.get().setEmail(userDTO.getEmail());
+            tmpUser.get().setPassword(userDTO.getPassword());
+            tmpUser.get().setProfilePic(userDTO.getProfilePic());
+        }
+
+    }
+
     @Override
     public boolean deleteUser(String userId) {
 
@@ -60,19 +77,5 @@ public class UserServiceImpl implements UserService{
       return  mapping.convertUserToDTOList(getAllUsers);
     }
 
-    @Override
-    public boolean updateUser(UserDTO userDTO) {
-        Optional<UserEntity> tmpUser = userDAO.findById(userDTO.getUserId());
-        if(!tmpUser.isPresent()){
-            return false;
-        }else {
-            tmpUser.get().setFirstName(userDTO.getFirstName());
-            tmpUser.get().setLastName(userDTO.getLastName());
-            tmpUser.get().setEmail(userDTO.getEmail());
-            tmpUser.get().setPassword(userDTO.getPassword());
-            tmpUser.get().setProfilePic(userDTO.getProfilePic());
-        }
-        return true;
-    }
 
 }
