@@ -1,8 +1,9 @@
 package com.example.noteTaker.controller;
 
 
+import com.example.noteTaker.customObj.UserResponse;
 import com.example.noteTaker.dao.UserDAO;
-import com.example.noteTaker.dto.UserDTO;
+import com.example.noteTaker.dto.impl.UserDTO;
 import com.example.noteTaker.exception.UserNotFoundException;
 import com.example.noteTaker.service.UserService;
 import com.example.noteTaker.util.AppUtil;
@@ -21,8 +22,6 @@ import java.util.List;
 public class UserController {
     @Autowired
     private final UserService userService;
-    @Autowired
-    private UserDAO userDAO;
     //save user
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     //consume - clientge peththe
@@ -62,7 +61,7 @@ public class UserController {
      }
 
     @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserDTO getSelectedUser(@PathVariable ("id") String userId){
+    public UserResponse getSelectedUser(@PathVariable ("id") String userId){
         return userService.getSelectedUser(userId);
     }
 

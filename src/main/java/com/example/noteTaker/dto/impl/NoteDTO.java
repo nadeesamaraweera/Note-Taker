@@ -1,4 +1,4 @@
-package com.example.noteTaker.dto;
+package com.example.noteTaker.dto.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

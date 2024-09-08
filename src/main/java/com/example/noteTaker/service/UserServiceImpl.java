@@ -1,9 +1,9 @@
 package com.example.noteTaker.service;
 
+import com.example.noteTaker.customObj.UserErrorResponse;
+import com.example.noteTaker.customObj.UserResponse;
 import com.example.noteTaker.dao.UserDAO;
-import com.example.noteTaker.dto.NoteDTO;
-import com.example.noteTaker.dto.UserDTO;
-import com.example.noteTaker.entity.NoteEntity;
+import com.example.noteTaker.dto.impl.UserDTO;
 import com.example.noteTaker.entity.UserEntity;
 import com.example.noteTaker.exception.UserNotFoundException;
 import com.example.noteTaker.util.AppUtil;
@@ -65,11 +65,17 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+
     @Override
-    public UserDTO getSelectedUser(String userId) {
-        UserEntity userEntityByUserId = userDAO.getUserEntityByUserId(userId);
-        return mapping.convertToUserDTO(userEntityByUserId);
-    }
+        public UserResponse getSelectedUser(String userId) {
+            if(userDAO.existsById(userId)){
+                UserEntity userEntityByUserId = userDAO.getUserEntityByUserId(userId);
+                return mapping.convertToUserDTO(userEntityByUserId);
+            }else {
+                return new UserErrorResponse(0, "User not found");
+            }
+        }
+
 
     @Override
     public List<UserDTO> getAllUsers() {
