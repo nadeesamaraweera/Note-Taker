@@ -3,6 +3,7 @@ package com.example.noteTaker.service;
 import com.example.noteTaker.dao.NoteDAO;
 import com.example.noteTaker.dto.impl.NoteDTO;
 import com.example.noteTaker.entity.NoteEntity;
+import com.example.noteTaker.exception.NoteNotFound;
 import com.example.noteTaker.util.AppUtil;
 import com.example.noteTaker.util.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,17 +52,16 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public boolean updateNote(String noteId, NoteDTO incomeNoteDTO) {
+    public void updateNote(String noteId, NoteDTO incomeNoteDTO) {
      Optional<NoteEntity> tmpnoteEntity = noteDAO.findById(noteId);
      if(!tmpnoteEntity.isPresent()){
-         return false;
+         throw new NoteNotFound("Note Not Found");
      }else {
          tmpnoteEntity.get().setNoteDesc(incomeNoteDTO.getNoteDesc());
          tmpnoteEntity.get().setNoteTitle(incomeNoteDTO.getNoteTitle());
          tmpnoteEntity.get().setCreateDate(incomeNoteDTO.getCreateDate());
          tmpnoteEntity.get().setPriorityLevel(incomeNoteDTO.getPriorityLevel());
      }
-      return true;
     }
 
     @Override
