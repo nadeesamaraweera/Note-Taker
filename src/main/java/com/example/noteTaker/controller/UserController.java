@@ -55,10 +55,17 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-     @DeleteMapping("/{id}")
-     public ResponseEntity<String> deleteUser(@PathVariable("id") String userId){
-       return userService.deleteUser(userId)?new ResponseEntity<>(HttpStatus.NO_CONTENT):new ResponseEntity<>(HttpStatus.NOT_FOUND);
-     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable ("id") String userId) {
+        try {
+            userService.deleteUser(userId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (UserNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public UserResponse getSelectedUser(@PathVariable ("id") String userId){
