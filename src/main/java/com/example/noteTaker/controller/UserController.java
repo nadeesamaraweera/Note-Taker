@@ -49,7 +49,7 @@ public class UserController {
         //send to the service layer
 
         var saveStatus = userService.saveUser(builduserDTO);
-        if (saveStatus.contains("User saved successfully")){
+        if (saveStatus.contains("User saved Successfully")){
             return new ResponseEntity<>(HttpStatus.CREATED);
         }else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

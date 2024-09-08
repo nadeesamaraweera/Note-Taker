@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService{
     public String saveUser(UserDTO userDTO) {
         userDTO.setUserId(AppUtil.createUserId());
         UserEntity savedUser = userDAO.save(mapping.convertToUserEntity(userDTO));
-        if (savedUser != null && savedUser.getUserId() != null){
+        if (savedUser.getUserId() != null){
             return "User saved Successfully";
         }else {
             return  "Save failed";
