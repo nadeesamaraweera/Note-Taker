@@ -4,6 +4,7 @@ package com.example.noteTaker.controller;
 import com.example.noteTaker.customObj.UserResponse;
 import com.example.noteTaker.dao.UserDAO;
 import com.example.noteTaker.dto.impl.UserDTO;
+import com.example.noteTaker.exception.DataPersistFailedException;
 import com.example.noteTaker.exception.UserNotFoundException;
 import com.example.noteTaker.service.UserService;
 import com.example.noteTaker.util.AppUtil;
@@ -36,32 +37,22 @@ public class UserController {
             @RequestPart("profilePic") String profilePic) {
 
         //Handle Profile Picture
-        String base64ProfilePic = AppUtil.toBase64ProfilePic(profilePic);
-
-        //build the object
-        var builduserDTO = new UserDTO();
-        builduserDTO.setFirstName(firstName);
-        builduserDTO.setLastName(lastName);
-        builduserDTO.setEmail(email);
-        builduserDTO.setPassword(password);
-        builduserDTO.setProfilePic(base64ProfilePic);
-
-        //send to the service layer
-
-        var saveStatus = userService.saveUser(builduserDTO);
-        if (saveStatus.contains("User saved Successfully")){
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        }else {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable ("id") String userId) {
         try {
-            userService.deleteUser(userId);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (UserNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            String base64ProfilePic = AppUtil.toBase64ProfilePic(profilePic);
+
+            //build the object
+            var builduserDTO = new UserDTO();
+            builduserDTO.setFirstName(firstName);
+            builduserDTO.setLastName(lastName);
+            builduserDTO.setEmail(email);
+            builduserDTO.setPassword(password);
+            builduserDTO.setProfilePic(base64ProfilePic);
+
+            //send to the service layer
+            userService.saveUser(builduserDTO);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (DataPersistFailedException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -5,6 +5,7 @@ import com.example.noteTaker.customObj.UserResponse;
 import com.example.noteTaker.dao.UserDAO;
 import com.example.noteTaker.dto.impl.UserDTO;
 import com.example.noteTaker.entity.UserEntity;
+import com.example.noteTaker.exception.DataPersistFailedException;
 import com.example.noteTaker.exception.UserNotFoundException;
 import com.example.noteTaker.util.AppUtil;
 import com.example.noteTaker.util.Mapping;
@@ -26,19 +27,15 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private  final Mapping mapping;
 
-
     @Override
-    public String saveUser(UserDTO userDTO) {
+    public void saveUser(UserDTO userDTO) {
         userDTO.setUserId(AppUtil.createUserId());
-        UserEntity savedUser = userDAO.save(mapping.convertToUserEntity(userDTO));
-        if (savedUser.getUserId() != null){
-            return "User saved Successfully";
-        }else {
-            return  "Save failed";
+        UserEntity savedUser =
+                userDAO.save(mapping.convertToUserEntity(userDTO));
+        if(savedUser == null && savedUser.getUserId() == null ) {
+            throw new DataPersistFailedException("Cannot data saved");
         }
     }
-
-
     @Override
     public void updateUser(UserDTO userDTO) {
         Optional<UserEntity> tmpUser = userDAO.findById(userDTO.getUserId());
@@ -51,9 +48,7 @@ public class UserServiceImpl implements UserService{
             tmpUser.get().setPassword(userDTO.getPassword());
             tmpUser.get().setProfilePic(userDTO.getProfilePic());
         }
-
     }
-
     @Override
     public void deleteUser(String userId) {
         Optional<UserEntity> selectedUserId = userDAO.findById(userId);
@@ -63,24 +58,18 @@ public class UserServiceImpl implements UserService{
             userDAO.deleteById(userId);
         }
     }
-
-
     @Override
-        public UserResponse getSelectedUser(String userId) {
-            if(userDAO.existsById(userId)){
-                UserEntity userEntityByUserId = userDAO.getUserEntityByUserId(userId);
-                return mapping.convertToUserDTO(userEntityByUserId);
+    public UserResponse getSelectedUser(String userId) {
+        if(userDAO.existsById(userId)){
+            UserEntity userEntityByUserId = userDAO.getUserEntityByUserId(userId);
+            return mapping.convertToUserDTO(userEntityByUserId);
             }else {
                 return new UserErrorResponse(0, "User not found");
-            }
         }
-
-
+    }
     @Override
     public List<UserDTO> getAllUsers() {
       List<UserEntity> getAllUsers = userDAO.findAll();
       return  mapping.convertUserToDTOList(getAllUsers);
     }
-
-
 }
