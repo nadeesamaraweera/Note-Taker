@@ -18,35 +18,43 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
-    private  final UserService userService;
+    private final UserService userService;
 
-     //save user
-     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-     public ResponseEntity<String> saveUser(
-        @RequestPart("firstName") String  firstName,
-        @RequestPart("lastName")String  lastName,
-        @RequestPart("email")String  email,
-        @RequestPart("password")String  password,
-        @RequestPart("profilePic")String  profilePic) {
 
-         //Handle Profile Picture
-         String base64ProfilePic= AppUtil.toBase64ProfilePic(profilePic);
+    //save user
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    //consume - clientge peththe
+    //produce - server ek visin
+    public ResponseEntity<String>
+
+    saveUser(
+            @RequestPart("firstName") String firstName,
+            @RequestPart("lastName") String lastName,
+            @RequestPart("email") String email,
+            @RequestPart("password") String password,
+            @RequestPart("profilePic") String profilePic) {
+
+        //Handle Profile Picture
+        String base64ProfilePic = AppUtil.toBase64ProfilePic(profilePic);
 
         //build the object
-         var builduserDTO = new UserDTO();
-         builduserDTO.setFirstName(firstName);
-         builduserDTO.setLastName(lastName);
-         builduserDTO.setEmail(email);
-         builduserDTO.setPassword(password);
-         builduserDTO.setProfilePic(base64ProfilePic);
+        var builduserDTO = new UserDTO();
+        builduserDTO.setFirstName(firstName);
+        builduserDTO.setLastName(lastName);
+        builduserDTO.setEmail(email);
+        builduserDTO.setPassword(password);
+        builduserDTO.setProfilePic(base64ProfilePic);
 
-         //send to the service layer
+        //send to the service layer
 
-         return new ResponseEntity<>(userService.saveUser(builduserDTO), HttpStatus.CREATED);
-     }
+        return new ResponseEntity<>(userService.saveUser(builduserDTO), HttpStatus.CREATED);
+    }
 
+     //delete user
+     @DeleteMapping("/{id}")
+     public ResponseEntity<String> deleteUser(@PathVariable("id") String userId){
+       return userService.deleteUser(userId)?new ResponseEntity<>(HttpStatus.NO_CONTENT):new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+    }
 }
 
-
-//consume - clientge peththe
-//produce - server ek visin
