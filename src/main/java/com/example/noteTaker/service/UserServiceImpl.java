@@ -1,7 +1,6 @@
 package com.example.noteTaker.service;
 
 import com.example.noteTaker.dao.UserDAO;
-import com.example.noteTaker.dto.NoteDTO;
 import com.example.noteTaker.dto.UserDTO;
 import com.example.noteTaker.entity.UserEntity;
 import com.example.noteTaker.util.AppUtil;
@@ -56,6 +55,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<UserDTO> getAllUsers() {
-        return List.of();
+      List<UserEntity> getAllUsers = userDAO.findAll();
+      return  mapping.convertUserToDTOList(getAllUsers);
     }
 }
