@@ -28,8 +28,7 @@ public class Mapping { //dto entity waltth entity dto wltth convert karanna.  //
     }
 
     public List<NoteDTO> convertToDTO(List<NoteEntity> notes){
-        return modelMapper.map(notes,List.class);
-    }
+        return modelMapper.map(notes, new TypeToken<List<NoteDTO>>() {}.getType());    }
 
 
     //user matters mapping
