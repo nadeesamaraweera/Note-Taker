@@ -40,14 +40,14 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public void updateNote(String noteId, NoteDTO incomeNoteDTO) {
-        Optional<NoteEntity> tmpnoteEntity = noteDAO.findById(noteId);
-        if (!tmpnoteEntity.isPresent()) {
-            throw new NoteNotFound("Note Not Found");
-        } else {
-            tmpnoteEntity.get().setNoteDesc(incomeNoteDTO.getNoteDesc());
-            tmpnoteEntity.get().setNoteTitle(incomeNoteDTO.getNoteTitle());
-            tmpnoteEntity.get().setCreateDate(incomeNoteDTO.getCreateDate());
-            tmpnoteEntity.get().setPriorityLevel(incomeNoteDTO.getPriorityLevel());
+        Optional<NoteEntity> tmpNoteEntity= noteDAO.findById(noteId);
+        if(!tmpNoteEntity.isPresent()){
+            throw new NoteNotFound("Note not found");
+        }else {
+            tmpNoteEntity.get().setNoteDesc(incomeNoteDTO.getNoteDesc());
+            tmpNoteEntity.get().setNoteTitle(incomeNoteDTO.getNoteTitle());
+            tmpNoteEntity.get().setCreateDate(incomeNoteDTO.getCreateDate());
+            tmpNoteEntity.get().setPriorityLevel(incomeNoteDTO.getPriorityLevel());
         }
     }
 
