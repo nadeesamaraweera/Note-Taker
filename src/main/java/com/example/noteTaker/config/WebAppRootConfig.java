@@ -27,7 +27,7 @@ public class WebAppRootConfig {
         return new ModelMapper();
     }
 
-    @Bean
+    @Bean//database ek connect krnna
     public DataSource dataSource() {
         var dmds = new DriverManagerDataSource();
         dmds.setDriverClassName("com.mysql.cj.jdbc.Driver");
@@ -38,20 +38,20 @@ public class WebAppRootConfig {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() { //hibernatewa config krgnna
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setGenerateDdl(true);
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("com.example.noteTaker.entity");
+        factory.setPackagesToScan("com.example.noteTaker.entity"); // entities thiyn  packge eka scan krl thiynwa
         factory.setDataSource(dataSource());
         return factory;
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) { //transaction manage krnna
 
         JpaTransactionManager txManager = new JpaTransactionManager();
         txManager.setEntityManagerFactory(entityManagerFactory);
