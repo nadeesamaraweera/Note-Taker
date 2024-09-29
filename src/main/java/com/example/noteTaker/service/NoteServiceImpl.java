@@ -3,6 +3,7 @@ package com.example.noteTaker.service;
 import com.example.noteTaker.dao.NoteDAO;
 import com.example.noteTaker.dto.impl.NoteDTO;
 import com.example.noteTaker.entity.NoteEntity;
+import com.example.noteTaker.exception.DataPersistFailedException;
 import com.example.noteTaker.exception.NoteNotFound;
 import com.example.noteTaker.util.AppUtil;
 import com.example.noteTaker.util.Mapping;
@@ -24,31 +25,15 @@ public class NoteServiceImpl implements NoteService {
      private Mapping mapping;
 
 
-//    List<NoteDTO> saveNoteTm = new ArrayList<>();
-//    public NoteServiceImpl(){
-//        saveNoteTm.add(new NoteDTO("NOTE 4f8a0a67-2ebc-41b2-9de6-4e9bcdba65bb",
-//                "MadolDuwa","hiud","second","2024-08-25"));
-//        saveNoteTm.add(new NoteDTO("NOTE 4f8a0a67-2ebc-41b2-9de6-4e9bcdba66bb",
-//                "MadolDuwa","hiud","second","2024-08-25"));
-//        saveNoteTm.add(new NoteDTO("NOTE 4f8a0a67-2ebc-41b2-9de6-4e9bcdba67bb",
-//                "MadolDuwa","hiud","second","2024-08-25"));
-//        saveNoteTm.add(new NoteDTO("NOTE 4f8a0a67-2ebc-41b2-9de6-4e9bcdba68bb",
-//                "MadolDuwa","hiud","second","2024-08-25"));
-//        saveNoteTm.add(new NoteDTO("NOTE 4f8a0a67-2ebc-41b2-9de6-4e9bcdba69bb",
-//                "MadolDuwa","hiud","second","2024-08-25"));
-//        System.out.println(saveNoteTm);
-//    }
-
-
     @Override
-    public String saveNote(NoteDTO noteDTO) {
-//        noteDTO.setNoteId(AppUtil.createNote());
-//        saveNoteTm.add(noteDTO);
-//        return "Saved successfully in service layer";
+    public void saveNote(NoteDTO noteDTO) {
         noteDTO.setNoteId(AppUtil.createNote());
         var noteEntity = mapping.convertToEntity(noteDTO);
-        noteDAO.save(noteEntity);
-        return "Saved successfully in service layer";
+        var savedNoted = noteDAO.save(noteEntity);
+        if(savedNoted == null){
+            throw new DataPersistFailedException("Cannot save Note");
+        }
+
     }
 
     @Override
