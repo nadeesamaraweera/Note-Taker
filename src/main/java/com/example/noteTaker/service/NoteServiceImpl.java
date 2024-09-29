@@ -24,7 +24,7 @@ public class NoteServiceImpl implements NoteService {
     private NoteDAO noteDAO;
 
     @Autowired
-     private Mapping mapping;
+    private Mapping mapping;
 
 
     @Override
@@ -32,7 +32,7 @@ public class NoteServiceImpl implements NoteService {
         noteDTO.setNoteId(AppUtil.createNote());
         var noteEntity = mapping.convertToEntity(noteDTO);
         var savedNoted = noteDAO.save(noteEntity);
-        if(savedNoted == null){
+        if (savedNoted == null) {
             throw new DataPersistFailedException("Cannot save Note");
         }
 
@@ -40,27 +40,26 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public void updateNote(String noteId, NoteDTO incomeNoteDTO) {
-     Optional<NoteEntity> tmpnoteEntity = noteDAO.findById(noteId);
-     if(!tmpnoteEntity.isPresent()){
-         throw new NoteNotFound("Note Not Found");
-     }else {
-         tmpnoteEntity.get().setNoteDesc(incomeNoteDTO.getNoteDesc());
-         tmpnoteEntity.get().setNoteTitle(incomeNoteDTO.getNoteTitle());
-         tmpnoteEntity.get().setCreateDate(incomeNoteDTO.getCreateDate());
-         tmpnoteEntity.get().setPriorityLevel(incomeNoteDTO.getPriorityLevel());
-     }
+        Optional<NoteEntity> tmpnoteEntity = noteDAO.findById(noteId);
+        if (!tmpnoteEntity.isPresent()) {
+            throw new NoteNotFound("Note Not Found");
+        } else {
+            tmpnoteEntity.get().setNoteDesc(incomeNoteDTO.getNoteDesc());
+            tmpnoteEntity.get().setNoteTitle(incomeNoteDTO.getNoteTitle());
+            tmpnoteEntity.get().setCreateDate(incomeNoteDTO.getCreateDate());
+            tmpnoteEntity.get().setPriorityLevel(incomeNoteDTO.getPriorityLevel());
+        }
     }
 
     @Override
-    public boolean deleteNote(String noteId) {
+    public void deleteNote(String noteId) {
         //noteDAO.deleteById(noteId);
-        if(noteDAO.existsById(noteId)){
+        Optional<NoteEntity> findId = noteDAO.findById(noteId);
+        if (!findId.isPresent()) {
+            throw new NoteNotFound("Note not found");
+        } else {
             noteDAO.deleteById(noteId);
-            return true;
-        }else {
-            return false;
         }
-
     }
 
     @Override
