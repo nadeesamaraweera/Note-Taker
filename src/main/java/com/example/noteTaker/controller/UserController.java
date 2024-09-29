@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -34,26 +35,25 @@ public class UserController {
             @RequestPart("lastName") String lastName,
             @RequestPart("email") String email,
             @RequestPart("password") String password,
-            @RequestPart("profilePic") String profilePic) {
+            @RequestPart("profilePic") MultipartFile profilePic) {
 
         //Handle Profile Picture
         try {
+            //byte [] imageByteCollection = profilePic.getBytes();
             String base64ProfilePic = AppUtil.toBase64ProfilePic(profilePic);
-
-            //build the object
-            var builduserDTO = new UserDTO();
-            builduserDTO.setFirstName(firstName);
-            builduserDTO.setLastName(lastName);
-            builduserDTO.setEmail(email);
-            builduserDTO.setPassword(password);
-            builduserDTO.setProfilePic(base64ProfilePic);
-
+            // build the user object
+            UserDTO buildUserDTO = new UserDTO();
+            buildUserDTO.setFirstName(firstName);
+            buildUserDTO.setLastName(lastName);
+            buildUserDTO.setEmail(email);
+            buildUserDTO.setPassword(password);
+            buildUserDTO.setProfilePic(base64ProfilePic);
             //send to the service layer
-            userService.saveUser(builduserDTO);
+            userService.saveUser(buildUserDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (DataPersistFailedException e) {
+        }catch (DataPersistFailedException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
+        }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -74,7 +74,7 @@ public class UserController {
                                              @RequestPart("updateLastName") String updateLastName,
                                              @RequestPart("updateEmail") String updateEmail,
                                              @RequestPart("updatePassword") String updatePassword,
-                                             @RequestPart("updateProfilePic") String updateProfilePic
+                                             @RequestPart("updateProfilePic") MultipartFile updateProfilePic
     ){
         try {
             String updateBase64ProfilePic = AppUtil.toBase64ProfilePic(updateProfilePic);
