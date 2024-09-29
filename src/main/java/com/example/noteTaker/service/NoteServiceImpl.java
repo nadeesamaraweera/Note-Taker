@@ -1,5 +1,7 @@
 package com.example.noteTaker.service;
 
+import com.example.noteTaker.customObj.NoteErrorResponse;
+import com.example.noteTaker.customObj.NoteResponse;
 import com.example.noteTaker.dao.NoteDAO;
 import com.example.noteTaker.dto.impl.NoteDTO;
 import com.example.noteTaker.entity.NoteEntity;
@@ -62,11 +64,13 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public NoteDTO getSelectedNote(String noteId) {
-        return mapping.convertToDTO(noteDAO.getReferenceById(noteId));
-
+    public NoteResponse getSelectedNote(String noteId) {
+        if(noteDAO.existsById(noteId)){
+            return mapping.convertToDTO(noteDAO.getReferenceById(noteId));
+        }else {
+            return new NoteErrorResponse(0,"Note not found");
+        }
     }
-
     @Override
     public List<NoteDTO> getAllNotes() {
 //       List<NoteEntity> getAllNotes = noteDAO.findAll();

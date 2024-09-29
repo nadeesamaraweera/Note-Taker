@@ -1,5 +1,6 @@
 package com.example.noteTaker.controller;
 
+import com.example.noteTaker.customObj.NoteResponse;
 import com.example.noteTaker.exception.DataPersistFailedException;
 import com.example.noteTaker.exception.NoteNotFound;
 import com.example.noteTaker.service.NoteService;
@@ -45,7 +46,7 @@ public class NoteController {
 
 
     @GetMapping(value = "/{noteId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public NoteDTO getNote(@PathVariable ("noteId") String noteId)  {
+    public NoteResponse getNote(@PathVariable ("noteId") String noteId)  {
         return noteService.getSelectedNote(noteId);
     }
 
