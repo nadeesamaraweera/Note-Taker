@@ -21,8 +21,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
         maxFileSize = 1024 * 1024 * 10, //10MB   uplaod karana file eke uparima size eke
         maxRequestSize = 1024 * 1024 * 50  //50MB upload krana file athuluwa samastha resoure eke size eka
 )
-public class WebAppConfig {
+public class  WebAppConfig {
 }
 
 
-//multipart form data = binary file ekk dnn one nm use karai
+//multipart form data = binary file ekk dnn one nm use karai(file uploading walat user krai.)string,binary ona ekk ywann ahki.

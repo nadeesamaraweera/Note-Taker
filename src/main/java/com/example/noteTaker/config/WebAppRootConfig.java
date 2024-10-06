@@ -16,7 +16,9 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.sql.DataSource;
 
-@Configuration
+//presentation layer ekt direct sambande wenne na.
+
+@Configuration//source of beans
 @ComponentScan(basePackages = "com.example.noteTaker")
 @EnableJpaRepositories (basePackages = "com.example.noteTaker")
 @EnableTransactionManagement
@@ -27,8 +29,8 @@ public class WebAppRootConfig {
         return new ModelMapper();
     }
 
-    @Bean//database ek connect krnna
-    public DataSource dataSource() {
+    @Bean
+    public DataSource dataSource() {//database ek connect krnna
         var dmds = new DriverManagerDataSource();
         dmds.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dmds.setUrl("jdbc:mysql://localhost:3306/noteTaker?createDatabaseIfNotExist=true");
